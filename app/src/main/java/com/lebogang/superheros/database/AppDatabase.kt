@@ -19,7 +19,7 @@ abstract class AppDatabase : RoomDatabase(){
          * Gets the singleton instance of SampleDatabase.
          *
          * @param context The context.
-         * @return The singleton instance of SampleDatabase.
+         * @return The singleton instance of Character Database.
          */
         @Synchronized
         fun getInstance(context: Context): AppDatabase {

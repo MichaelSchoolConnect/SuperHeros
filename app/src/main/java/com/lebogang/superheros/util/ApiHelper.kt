@@ -11,11 +11,6 @@ import java.net.URLEncoder
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
-/**
- * Author: JIGAR PATEL.
- * Tutorial_URL: https://galleonsoft.com/tutorial/
- */
-
 object ApiHelper {
     public val result: String = ""
     // Send Parameters method

@@ -13,7 +13,7 @@ interface SuperHeroDAO {
     fun getAll(): List<SuperHeroEntity>
 
     @Query("SELECT * FROM character_items")
-    fun loadAllTasks(): List<SuperHeroEntity>
+    fun loadAllTasks(): LiveData<List<SuperHeroEntity>>
 
     @Insert
     fun insertAll(vararg arrayOfSuperHeroEntitys: SuperHeroEntity)

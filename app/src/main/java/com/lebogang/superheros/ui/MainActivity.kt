@@ -15,12 +15,9 @@ import com.lebogang.superheros.database.AppDatabase
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.HashMap
 import com.lebogang.superheros.database.SuperHeroEntity
 import com.lebogang.superheros.R
-import com.lebogang.superheros.model.MainActivityViewModel
 import com.lebogang.superheros.util.ApiHelper
-import kotlinx.android.synthetic.main.adapter_view_item.*
 
 
 class MainActivity:AppCompatActivity() {
@@ -34,17 +31,11 @@ class MainActivity:AppCompatActivity() {
     lateinit var progressBar: ProgressBar
     internal var arrayList = ArrayList<HashMap<String, String>>()
 
-    //private var mRecyclerView: RecyclerView? = null
-    //private var mAdapter: SuperHeroAdapter? = null
-
-    private var mTaskEntries: List<SuperHeroEntity>? = null
-
     // Member variable for the Database
     private var db: AppDatabase? = null
 
     lateinit var tvId: TextView
     lateinit var tvName: TextView
-    lateinit var priorityView: TextView
     lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,33 +59,19 @@ class MainActivity:AppCompatActivity() {
             // findViewById and set view tvId
             progressBar = findViewById(R.id.Pbar)
 
-            // Set the RecyclerView to its corresponding view
-            //mRecyclerView = findViewById(R.tvId.recyclerView)
-
-            // Set the layout for the RecyclerView to be a linear layout, which measures and
-            // positions items within a RecyclerView into a linear list
-            //this.mRecyclerView.layoutManager = LinearLayoutManager(this)
-
-            // Initialize the adapter and attach it to the RecyclerView
-            //mAdapter = SuperHeroAdapter(this)
-            //this.mRecyclerView!!.adapter = mAdapter
-
             if (isNetworkConnected) {
                 // Call AsyncTask for getting from server (JSON Api)
-                getDeveloper().execute()
+                GetCharacter().execute()
             } else {
                 Log.d(TAG, "No Internet connection.")
                 Toast.makeText(applicationContext, "No Internet Connection!", Toast.LENGTH_SHORT).show()
                 // Read the database and display the items.
                 Thread(Runnable {
                     Log.d(TAG, "Actively retrieving the tasks from the DataBase in a thread.")
-                    //AppDatabase.getInstance(this@MainActivity).superHeroDAO().getAll()
-
-
+                    AppDatabase.getInstance(this@MainActivity).superHeroDAO().getAll()
                 })
 
             }
-
     }
 
     // Checking Internet is available or not
@@ -104,7 +81,7 @@ class MainActivity:AppCompatActivity() {
 
 
     @SuppressLint("StaticFieldLeak")
-    inner class getDeveloper : AsyncTask<Void, Void, String>() {
+    inner class GetCharacter : AsyncTask<Void, Void, String>() {
 
         override fun onPreExecute() {
             // Show Progressbar
@@ -140,7 +117,6 @@ class MainActivity:AppCompatActivity() {
                     val url = rootJsonObject.getString("url")
 
                     //Add data into DB
-                    //AppDatabase.getInstance(this@MainActivity).superHeroDAO().updateTodo()
                     val task = SuperHeroEntity(name, url)
                     Thread(Runnable {
                         AppDatabase.getInstance(this@MainActivity).superHeroDAO().insertAll(task)
@@ -148,6 +124,8 @@ class MainActivity:AppCompatActivity() {
 
                     tvId.text = id
                     tvName.text = name
+
+                    //Get image from url
                     Glide.with(this@MainActivity)
                             .load(url)
                             .placeholder(R.drawable.ic_launcher_background)
@@ -164,7 +142,6 @@ class MainActivity:AppCompatActivity() {
                     arrayList.add(mHash)
 
 
-
                 } else {
                     Toast.makeText(applicationContext, "No data in API found.", Toast.LENGTH_SHORT).show()
                 }
@@ -177,7 +154,6 @@ class MainActivity:AppCompatActivity() {
             }
         }
     }
-
 
 }
 

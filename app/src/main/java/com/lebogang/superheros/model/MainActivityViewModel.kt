@@ -14,13 +14,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         // Constant for logging
         private val TAG = MainActivityViewModel::class.java.simpleName
     }
-    //val tasks: LiveData<List<SuperHeroEntity>>
+
+    val tasks: LiveData<List<SuperHeroEntity>>
 
     init {
         val database = AppDatabase.getInstance(this.getApplication())
         Log.d(TAG, "Actively retrieving the tasks from the DataBase")
-        //tasks = database.superHeroDAO().loadAllTasks()
+        tasks = database.superHeroDAO().loadAllTasks()
     }
-
 
 }
